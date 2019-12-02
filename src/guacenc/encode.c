@@ -67,6 +67,9 @@ static int guacenc_read_instructions(guacenc_display* display,
                 parser->argc, parser->argv)) {
             guacenc_log(GUAC_LOG_DEBUG, "Handling of \"%s\" instruction "
                     "failed.", parser->opcode);
+        }else{
+            guacenc_log(GUAC_LOG_ERROR, "Handling of \"%s\" instruction "
+                    "OK.", parser->opcode);
         }
     }
 
