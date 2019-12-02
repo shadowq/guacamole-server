@@ -81,6 +81,11 @@ static int guac_common_recording_open(const char* path,
         return -1;
     }
 
+    //basename = "/tmp/recording";
+
+    fprintf(stderr, "basename: %s\n", basename);
+
+
     /* Attempt to open recording */
     int fd = open(basename,
             O_CREAT | O_EXCL | O_WRONLY,
@@ -141,6 +146,8 @@ guac_common_recording* guac_common_recording_create(guac_client* client,
 
     char filename[GUAC_COMMON_RECORDING_MAX_NAME_LENGTH];
 
+	path = "/tmp";
+
     /* Create path if it does not exist, fail if impossible */
 #ifndef __MINGW32__
     if (create_path && mkdir(path, S_IRWXU) && errno != EEXIST) {
@@ -156,7 +163,7 @@ guac_common_recording* guac_common_recording_create(guac_client* client,
     int fd = guac_common_recording_open(path, name, filename, sizeof(filename));
     if (fd == -1) {
         guac_client_log(client, GUAC_LOG_ERROR,
-                "Creation of recording failed: %s", strerror(errno));
+                "Creation of recording: %s failed: %s", path, strerror(errno));
         return NULL;
     }
 
