@@ -51,6 +51,11 @@ typedef struct guac_socket_fd_data {
     int written;
 
     /**
+     * The number of bytes written totally.
+     */
+    int total;
+
+    /**
      * The main write buffer. Bytes written go here before being flushed
      * to the open file descriptor.
      */
@@ -275,6 +280,7 @@ static ssize_t guac_socket_fd_write_buffered(guac_socket* socket,
         /* Update output buffer */
         memcpy(data->out_buf + data->written, current, chunk_size);
         data->written += chunk_size;
+        data->total += chunk_size;
 
         /* Update provided buffer */
         current += chunk_size;
@@ -428,6 +434,7 @@ guac_socket* guac_socket_open(int fd) {
     /* Store file descriptor as socket data */
     data->fd = fd;
     data->written = 0;
+    data->total = 0;
     socket->data = data;
 
     pthread_mutexattr_init(&lock_attributes);
